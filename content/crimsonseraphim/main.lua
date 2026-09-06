@@ -332,6 +332,20 @@ FishAndChips.Fish {
             card, "fac_crimsonseraphim_ruby_crystalfish", 1, card.ability.extra.odds)
             and not context.blueprint and not context.retrigger_joker then
             card:transmute(nil, G.P_CENTERS.fish_fac_crimsonseraphim_jade_crystalfish)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    if #SMODS.find_card("fish_fac_crimsonseraphim_ruby_crystalfish") <= 0 then
+                        for i, v in pairs(G.I.CARD) do
+                            if v.config and v.config.center and v.config.center.set == "fac_Fish" and v ~= card then
+                                v.base.suit = nil
+                                v.base.value = nil
+                                v.children.front = nil
+                            end
+                        end
+                    end
+                    return true;
+                end
+            }))
         end
         if context.fac_fish_caught and not context.blueprint and not context.retrigger_joker then
             SMODS.change_base(context.fac_fish_caught,
@@ -341,7 +355,7 @@ FishAndChips.Fish {
         end
 	end,
     add_to_deck = function(self, card)
-        if #SMODS.find_card("fish_fac_ruby_crystalfish") <= 0 then
+        if #SMODS.find_card("fish_fac_crimsonseraphim_ruby_crystalfish") <= 0 then
             for i, v in pairs(G.I.CARD) do
                 if v.config and v.config.center and v.config.center.set == "fac_Fish" and v ~= card then
                     SMODS.change_base(v,
@@ -351,7 +365,18 @@ FishAndChips.Fish {
                 end
             end
         end
-    end
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        if #SMODS.find_card("fish_fac_crimsonseraphim_ruby_crystalfish") <= 0 then
+            for i, v in pairs(G.I.CARD) do
+                if v.config and v.config.center and v.config.center.set == "fac_Fish" and v ~= card then
+                    v.base.suit = nil
+                    v.base.value = nil
+                    v.children.front = nil
+                end
+            end
+        end
+    end,
 }
 
 FishAndChips.Fish {
